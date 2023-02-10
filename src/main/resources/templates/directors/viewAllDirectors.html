@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}"
+      lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Участники</title>
+</head>
+<body>
+
+<div layout:fragment="content">
+
+    <h1>Участники фильмов</h1>
+
+    <div class="row">
+        <div class="col">
+            <a
+                    href="directors/add"
+                    class="btn btn-secondary"
+                    role="button"
+                    style="float: right"
+                    aria-disabled="true">Добавить участника</a>
+        </div>
+    </div>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>ФИО</th>
+            <th>Должность</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="director : ${directors}">
+            <td th:text="${director.directorFIO}"></td>
+            <td th:text="${director.position}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <nav aria-label="Pagination" th:if="${directors.totalPages gt 0}">
+        <ul class="pagination justify-content-center font-weight-bold">
+            <li class="page-item" th:classappend="${directors.number eq 0} ? 'disabled'">
+                <a class="page-link"
+                   th:href="@{/directors?page={id}(id=${directors.number lt 2 ? 1 : directors.number})}"
+                   aria-label="Previous" title="Previous Page" data-toggle="tooltip">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li class="page-item"
+                th:each="i : ${#numbers.sequence(1, directors.totalPages, 1)}"
+                th:classappend="${i eq directors.number + 1} ? 'active'">
+                <a class="page-link" th:href="@{/directors?page={id}(id=${i})}" th:text="${i}"
+                   th:title="${'Page '+ i}" data-toggle="tooltip"></a>
+            </li>
+            <li class="page-item" th:classappend="${directors.number eq directors.totalPages - 1} ? 'disabled'">
+                <a class="page-link"
+                   th:href="@{/directors?page={id}(id=${directors.number + 2})}"
+                   aria-label="Next" title="Next Page" data-toggle="tooltip">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+</div>
+
+</body>
+</html>

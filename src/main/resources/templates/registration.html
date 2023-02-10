@@ -1,0 +1,70 @@
+<!--Страница регистрации-->
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}"
+      lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Регистрация</title>
+</head>
+<body>
+<div layout:fragment="content">
+  <!--        Форма регистрации-->
+  <!--        action="/registration" - url на который будут отправлены данные-->
+  <!--        object="userForm" - имя объекта в котором будут хранится данные (нужно чтобы потом в контроллере их распарсить)-->
+  <form method="POST" th:action="@{/users/registration}" th:object="${userForm}" style="margin: 0 auto">
+    <div class="row">
+      <div  class="col-auto">
+        <label for="login" class="form-label">Логин</label>
+        <input name="login" type="text" class="form-control" id="login" required>
+      </div>
+      <div class="col-auto">
+        <label for="password" class="form-label">Пароль</label>
+        <input name="password" type="password" class="form-control" id="password" required>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-auto">
+        <label for="firstName" class="form-label">Имя</label>
+        <input name="firstName" type="text" class="form-control" id="firstName" required>
+      </div>
+      <div class="col-auto">
+        <label for="lastName" class="form-label">Фамилия</label>
+        <input name="lastName" type="text" class="form-control" id="lastName" required>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-auto">
+        <label for="middleName" class="form-label">Отчество</label>
+        <input name="middleName" type="text" class="form-control" id="middleName" required>
+      </div>
+      <div class="col-auto">
+        <label for="email" class="form-label">Бэкап-почта</label>
+        <input name="email" type="text" class="form-control" id="email" required>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-auto">
+        <label for="phone" class="form-label">Телефон</label>
+        <input name="phone" type="text" class="form-control" id="phone" required>
+      </div>
+      <div class="col-auto">
+        <label for="address" class="form-label">Адрес</label>
+        <input name="address" type="text" class="form-control" id="address" required>
+      </div>
+    </div>
+    <div class="col-2">
+      <label for="birthDate" class="form-label">Дата Рождения</label>
+      <input placeholder="YYYY-MM-DD" name="birthDate" type="date" class="form-control" id="birthDate" required>
+    </div>
+    <br>
+    <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
+    <button class="btn btn-secondary" onclick="window.history.back()">Назад</button>
+  </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}"
+      lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Профиль</title>
+</head>
+<body>
+<div layout:fragment="content">
+  <h1>Профиль</h1>
+  <p>Логин: <span th:text="${user.login}"></span></p>
+  <p>Имя: <span th:text="${user.firstName}"></span></p>
+  <p>Фамилия: <span th:text="${user.lastName}"></span></p>
+  <p>Отчество: <span th:text="${user.middleName}"></span></p>
+  <p>Почта: <span th:text="${user.email}"></span></p>
+  <p>Дата рождения: <span th:text="${user.birthDate}"></span></p>
+  <p>Телефон: <span th:text="${user.phone}"></span></p>
+  <p>Адрес: <span th:text="${user.address}"></span></p>
+
+  <a
+          th:href="'/users/profile/update/' + ${user.getId()}"
+          class="btn btn-primary"
+          role="button"
+          th:if="${#authentication.getPrincipal().getUserId} == ${user.getId()}"
+  >
+    Редактировать
+  </a>
+</div>
+</body>
+</html>
