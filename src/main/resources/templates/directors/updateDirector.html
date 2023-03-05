@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+  <meta charset="UTF-8">
+  <title>Обновить участника</title>
+</head>
+<body>
+<div layout:fragment="content">
+  <h1>Обновить участника</h1>
+
+  <form method="POST" th:action="@{/directors/update}" th:object="${directorForm}">
+    <input type="hidden" th:value="${director.id}" name="id">
+    <div class="mb-3">
+      <label for="directorFIO" class="form-label">ФИО</label>
+      <input th:value="${director.directorFIO}" name="directorFIO" type="text" class="form-control" id="directorFIO">
+    </div>
+
+    <div class="mb-3">
+      <label for="position" class="form-label">Должность</label>
+      <input th:value="${director.position}" name="position" type="text" class="form-control" id="position">
+    </div>
+
+    <button type="submit" class="btn btn-primary">Обновить</button>
+  </form>
+</div>
+</body>
+</html>

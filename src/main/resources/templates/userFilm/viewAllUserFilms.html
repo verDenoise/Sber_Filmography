@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}"
+      lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Фильмы</title>
+    <style>
+        .film-link {
+            text-decoration: none;
+        }
+
+        .film-link:hover {
+            color: #001445;
+        }
+
+        .not-enough-film {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+
+<div layout:fragment="content">
+    <h1>Фильмы пользователя</h1>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Фильм</th>
+            <th scope="col">Дата взятия фильма</th>
+            <th scope="col">Дата возвращения</th>
+            <th scope="col">Возвращена</th>
+            <th scope="col">Период аренды(в днях)</th>
+            <th scope="col">Цена</th>
+            <th scope="col">Приобретено</th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <!--        Перебор пользователей-->
+        <tr th:each="order: ${orders}">
+            <td th:text="${order.film.title}"></td>
+            <td th:text="
+          ${order.rentDate.getDayOfMonth()} + '-' +
+          ${order.rentDate.getMonthValue()} + '-' +
+          ${order.rentDate.getYear()}">
+            </td>
+            <td th:if="${!order.returned}" style="color: red"
+                th:text="${order.returnDate.getDayOfMonth()} + '-' + ${order.returnDate.getMonthValue()} + '-' + ${order.returnDate.getYear()} + ' (По плану)'"></td>
+            <td th:if="${order.returned}"
+                th:text="${order.returnDate.getDayOfMonth()} + '-' + ${order.returnDate.getMonthValue()} + '-' + ${order.returnDate.getYear()}"></td>
+            <td th:text="${order.returned} ? 'Да' : 'Нет'"></td>
+            <td th:text="${order.rentPeriod}"></td>
+            <td th:text="${order.amount}"></td>
+            <td th:text="${order.purchase} ? 'Да' : 'Нет'"></td>
+            <td>
+                <a
+                        th:if="!${order.returned}"
+                        th:href="'/order/return-film/' + ${order.id}"
+                        class="btn btn-primary"
+                        role="button"
+                        aria-disabled="true">Вернуть фильм</a>
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+
+    <nav aria-label="Pagination" th:if="${orders.totalPages gt 0}">
+        <ul class="pagination justify-content-center font-weight-bold">
+            <li class="page-item" th:classappend="${orders.number eq 0} ? 'disabled'">
+                <a class="page-link"
+                   th:href="@{/order/user-films/?page={id}(id=${orders.number lt 2 ? 1 : orders.number})}"
+                   aria-label="Previous" title="Previous Page" data-toggle="tooltip">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li class="page-item"
+                th:each="i : ${#numbers.sequence(1, orders.totalPages, 1)}"
+                th:classappend="${i eq orders.number + 1} ? 'active'">
+                <a class="page-link" th:href="@{/order/user-films/{Uid}?page={id}(Uid=${UserID}, id=${i})}" th:text="${i}"
+                   th:title="${'Page '+ i}" data-toggle="tooltip"></a>
+            </li>
+            <li class="page-item" th:classappend="${orders.number eq orders.totalPages - 1} ? 'disabled'">
+                <a class="page-link"
+                   th:href="@{/order/user-films/?page={id}(id=${orders.number + 2})}"
+                   aria-label="Next" title="Next Page" data-toggle="tooltip">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+</body>
+</html>

@@ -2,6 +2,8 @@ package com.example.filmography.repository;
 
 import com.example.filmography.model.Film;
 import com.example.filmography.model.Genre;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -55,4 +57,21 @@ public interface FilmRepository extends GenericRepository<Film> {
                                         @Param(value = "filmsId") List<Long> filmsId);
 
     List<Film> findFilmsByDirectorsId(Long id);
+
+    Page<Film> findAllByTitle(Pageable pageable, String title);
+
+    Page<Film> findAllByIsDeletedFalse(Pageable pageable);
+
+    List<Film> findAllByGenreOrTitleOrCountry(Genre genre, String title, String country);
+
+    @Query(value = """
+            select *
+            from films
+            order by random()
+            limit 1     
+              """,
+            nativeQuery = true)
+    Film getRandomFilm();
+
+
 }

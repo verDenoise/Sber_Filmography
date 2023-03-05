@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Error page</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" media="screen"/>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg " style="background-color: #b84f3c;">
+    <div class="container-fluid">
+        <a class="navbar-brand" style="color: whitesmoke" href="/">Фильмотека</a>
+    </div>
+</nav>
+<div class="container">
+    <br>
+    <h1>Something went wrong</h1>
+    <h2>Our Engineers are on it </h2>
+    <p th:if="${message != null}" th:text="${message}"></p>
+    <a href="/"> Go home!</a>
+</div>
+</body>
+</html>

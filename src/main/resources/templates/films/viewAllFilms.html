@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorate="~{layout}"
       lang="en">
 <head>
@@ -8,8 +9,8 @@
 </head>
 <body>
 
-<div layout:fragment="content">
 
+<div layout:fragment="content">
     <h1>Фильмы</h1>
 
     <div class="row">
@@ -19,7 +20,23 @@
                     class="btn btn-secondary"
                     role="button"
                     style="float: right"
+                    sec:authorize="isAuthenticated() && (hasRole('ADMIN'))"
                     aria-disabled="true">Добавить фильм</a>
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col">
+            <form method="POST" action="films/search" th:object="${searchFilms}">
+                <div class="row">
+                    <div class="col-10">
+                        <input placeholder="Введите название фильма" type="text" id="title" class="form-control" name="title">
+                    </div>
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-primary">Поиск</button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -30,7 +47,9 @@
             <th>Дата премьеры</th>
             <th>Страна</th>
             <th>Жанр</th>
+            <th>Стоимость</th>
             <th>Участники</th>
+            <th sec:authorize="hasRole('ADMIN')" scope="col">Статус</th>
         </tr>
         </thead>
         <tbody>
@@ -39,11 +58,24 @@
             <td th:text="${film.premierYear}"></td>
             <td th:text="${film.country}"></td>
             <td th:text="${film.genre.genreText}"></td>
+            <td th:text="${film.amount}"></td>
             <td>
                 <ul style="list-style-type: none">
                     <li th:each = "director : ${film.directors}" th:text="${director.directorFIO}"></li>
                 </ul>
             </td>
+            <td sec:authorize="hasRole('ADMIN')" th:text="${film.isDeleted() ? 'Удалена' : 'Активна'}"></td>
+            <td>
+                <div sec:authorize="isAuthenticated() && (hasRole('ADMIN'))">
+                    <a th:if="${!film.isDeleted()}" class="btn btn-danger mb-1" th:href="'/films/block/' + ${film.id}">Заблокировать</a>
+                    <a th:if="${film.isDeleted()}" class="btn btn-success mb-1" th:href="'/films/unblock/' + ${film.id}">Разблокировать</a>
+                    <a class="btn btn-warning mb-1" th:href="'/films/update/' + ${film.id}">Обновить</a>
+                </div>
+                <a class="btn btn-success mb-1" th:href="'/films/' + ${film.id}">Просмотреть</a>
+                <a th:if="${film.getAmount() > 0}" sec:authorize="!hasRole('ADMIN')" class="btn btn-warning mb-1" th:href="'/order/purchase-film/' + ${film.id}">Купить</a>
+                <a th:if="${film.getAmount() > 0}" sec:authorize="!hasRole('ADMIN')" class="btn btn-success mb-1" th:href="'/order/get-film/' + ${film.id}">Аренда</a>
+            </td>
+
         </tr>
         </tbody>
     </table>

@@ -1,0 +1,24 @@
+version: "3.9"
+services:
+  deploy:
+    depends_on:
+      - postgres
+    container_name: deployFilmographyProject
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "9090:9090"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db_filmography:5432/db_filmography
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=1234
+  postgres:
+    container_name: db_filmography
+    image: postgres
+    environment:
+      POSTGRES_DB: "db_filmography"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "1234"
+    ports:
+      - "5432:5432"

@@ -6,5 +6,6 @@ import lombok.Data;
 public class PurchaseFilmDto {
     Long filmId;
     Long userId;
-    Integer amount;
+    //Integer amount;
+    Integer rentPeriod;
 }

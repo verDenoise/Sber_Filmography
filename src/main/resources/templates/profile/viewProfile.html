@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:sec="http://www.w3.org/1999/xhtml"
       layout:decorate="~{layout}"
       lang="en">
 <head>
@@ -19,13 +19,13 @@
   <p>Адрес: <span th:text="${user.address}"></span></p>
 
   <a
-          th:href="'/users/profile/update/' + ${user.getId()}"
+          sec:authorize="isAuthenticated() && !(hasRole('ADMIN'))"
+          th:href="'/users/profile/update/' + ${user.id}"
           class="btn btn-primary"
           role="button"
-          th:if="${#authentication.getPrincipal().getUserId} == ${user.getId()}"
-  >
-    Редактировать
-  </a>
+          th:if="${#authentication.getPrincipal().getUserId()} == ${user.id}"
+          aria-disabled="true">Редактировать</a>
+
 </div>
 </body>
 </html>

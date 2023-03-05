@@ -2,12 +2,15 @@ package com.example.filmography.rest.controller;
 
 import com.example.filmography.dto.AddFilmDto;
 import com.example.filmography.dto.DirectorDto;
+import com.example.filmography.dto.DirectorWithFilmsDto;
 import com.example.filmography.mapper.DirectorMapper;
 import com.example.filmography.mapper.DirectorWithFilmsMapper;
 import com.example.filmography.model.Director;
 import com.example.filmography.service.DirectorService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -22,6 +25,10 @@ public class DirectorController extends GenericController<Director, DirectorDto>
         this.directorWithFilmsMapper = directorWithFilmsMapper;
     }
 
+    @GetMapping("/director-films")
+    public List<DirectorWithFilmsDto> getDirectorsWithFilms() {
+        return service.listAll().stream().map(directorWithFilmsMapper::toDto).toList();
+    }
 
     @PostMapping("/add-film")
     public DirectorDto addFilm(@RequestBody AddFilmDto addFilmDto) {

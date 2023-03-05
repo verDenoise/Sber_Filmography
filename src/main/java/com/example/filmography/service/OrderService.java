@@ -6,6 +6,9 @@ import com.example.filmography.model.Film;
 import com.example.filmography.model.Order;
 import com.example.filmography.model.User;
 import com.example.filmography.repository.OrderRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -35,7 +38,7 @@ public class OrderService extends GenericService<Order> {
                 .rentPeriod(rentFilmDto.getRentPeriod())
                 .returned(false)
                 .purchase(false)
-                .amount(rentFilmDto.getAmount())
+                .amount(film.getAmount())
                 .user(user)
                 .film(film)
                 .build();
@@ -52,7 +55,7 @@ public class OrderService extends GenericService<Order> {
                 .rentPeriod(0)
                 .returned(false)
                 .purchase(true)
-                .amount(purchaseFilmDto.getAmount())
+                .amount(film.getAmount())
                 .user(user)
                 .film(film)
                 .build();
@@ -60,7 +63,18 @@ public class OrderService extends GenericService<Order> {
     }
 
     public List<Order> getUserOrders(Long userID){
-        return userService.getOne(userID).getOrder().stream().toList();//это плохо или нет?
+        return userService.getOne(userID).getOrder().stream().toList();
     }
 
+    public void returnFilm(Long id) {
+        Order order = getOne(id);
+        order.setReturned(true);
+        order.setReturnDate(LocalDateTime.now());
+        update(order);
+
+    }
+
+    public Page<Order> listAllPaginated(PageRequest pageRequest) {
+        return repository.findAll(pageRequest);
+    }
 }

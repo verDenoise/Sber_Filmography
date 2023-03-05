@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}"
+      lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Изменить фильм</title>
+</head>
+<body>
+<div layout:fragment="content">
+
+  <form method="POST" enctype="multipart/form-data" th:action="@{/films/update}" th:object="${filmForm}">
+    <input type="hidden" name="id"
+           th:value="${film.id}">
+    <div class="mb-3">
+      <label for="title" class="form-label">Название</label>
+      <input th:value="${film.title}" name="title" type="text" class="form-control" id="title">
+    </div>
+    <div class="mb-3">
+      <label for="premierYear" class="form-label">Год премьеры</label>
+      <input th:value="${film.premierYear}" name="premierYear" type="text" class="form-control" id="premierYear">
+    </div>
+    <div class="mb-3">
+      <label for="country" class="form-label">Страна</label>
+      <input th:value="${film.country}" name="country" type="text" class="form-control" id="country">
+    </div>
+    <div class="mb-3">
+      <label for="genre" class="form-label">Жанр</label>
+      <select class="form-select" name="genre" id="genre" aria-label="Default select example">
+        <option selected>Выберете жанр из списка:</option>
+        <option th:selected="${film.genre.name()}"
+                th:each="genre : ${T(com.example.filmography.model.Genre).values()}"
+                th:value="${genre}" th:text="${genre.getGenreText()}"></option>
+      </select>
+    </div>
+    <div class="mb-3">
+      <label for="amount" class="form-label">Стоимость</label>
+      <input th:value="${film.amount}" name="amount" type="text" class="form-control" id="amount">
+    </div>
+    <button type="submit" class="btn btn-primary">Изменить</button>
+    <button type="button" class="btn btn-secondary" onclick="window.history.back()">Назад</button>
+  </form>
+</div>
+</body>
+</html>

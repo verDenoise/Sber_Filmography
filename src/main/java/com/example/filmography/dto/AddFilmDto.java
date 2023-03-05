@@ -6,6 +6,6 @@ import lombok.Data;
 public class AddFilmDto {
 
     Long filmId;
-
     Long directorId;
+
 }

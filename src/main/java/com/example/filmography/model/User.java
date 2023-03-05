@@ -43,10 +43,6 @@ public class User extends GenericModel{
 
     @Column(name = "email")
     private String email;
-
-    @Column(name = "created_when")
-    private Date createdWhen;
-
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(
             name = "role_id",
@@ -56,5 +52,21 @@ public class User extends GenericModel{
 
     @OneToMany(mappedBy = "user")
     private Set<Order> order;
+
+    @Column(name = "change_password_token")
+    private String changePasswordToken;
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "role=" + role.getId() +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", middleName='" + middleName + '\'' +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
+                ", address='" + address + '\'' +
+                '}';
+    }
 
 }

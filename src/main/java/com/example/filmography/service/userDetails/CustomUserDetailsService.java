@@ -4,8 +4,8 @@ package com.example.filmography.service.userDetails;
 import com.example.filmography.model.User;
 import com.example.filmography.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -35,18 +35,15 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         if (username.equals(adminUserName)) {
-            return org.springframework.security.core.userdetails.User
-                    .builder()
-                    .username(adminUserName)
-                    .password(adminPassword)
-                    .roles(adminRole)
-                    .build();
+            return new CustomUserDetails(null, username, adminPassword, List.of(new SimpleGrantedAuthority("ROLE_ADMIN")));
         } else {
-            User user = userRepository.findUserByLogin(username);
+            User user = userRepository.findUserByLoginAndDeletedFalse(username);
             List<GrantedAuthority> authorities = new ArrayList<>();
             authorities.add(new SimpleGrantedAuthority(user.getRole().getId() == 1L ? "ROLE_USER" : "ROLE_ADMIN"));
             return new CustomUserDetails(user.getId().intValue(), username, user.getPassword(), authorities);
+
         }
     }
+
 }
 

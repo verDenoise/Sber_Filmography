@@ -33,6 +33,10 @@ public class Film extends GenericModel{
     @Column(name = "genre")
     private Genre genre;
 
+    @Column(name = "amount")
+    private Integer amount;
+
+
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
             name = "films_directors",

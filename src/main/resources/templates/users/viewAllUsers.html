@@ -1,0 +1,103 @@
+<!--Бронь маршрута-->
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}"
+      lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Пользователи</title>
+</head>
+<body>
+<div layout:fragment="content">
+  <h1>Пользователи фильмотеки</h1>
+  <div class="row">
+    <div class="col">
+      <a
+              href="/users/add-admin"
+              class="btn btn-secondary"
+              role="button"
+              style="float: right"
+              aria-disabled="true">Добавить админа</a>
+    </div>
+  </div>
+
+  <table class="table">
+    <thead>
+    <tr>
+      <th scope="col">Логин</th>
+      <th scope="col">Имя</th>
+      <th scope="col">Фамилия</th>
+      <th scope="col">Отчество</th>
+      <th scope="col">Почта</th>
+      <th scope="col">Дата рождения</th>
+      <th scope="col">Телефон</th>
+      <th scope="col">Адрес</th>
+      <th scope="col">Заблокирован</th>
+      <th scope="col">Роль</th>
+      <th scope="col"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <!--        Перебор пользователей-->
+    <tr th:each="user: ${users}">
+      <td th:text="${user.login}"></td>
+      <td th:text="${user.firstName}"></td>
+      <td th:text="${user.lastName}"></td>
+      <td th:text="${user.middleName}"></td>
+      <td th:text="${user.email}"></td>
+      <td th:text="${user.birthDate}"></td>
+      <td th:text="${user.phone}"></td>
+      <td th:text="${user.address}"></td>
+      <td th:text="${user.isDeleted() ? 'Да' : 'Нет'}"></td>
+      <td th:text="${user.getRole().getDescription()}"></td>
+      <td>
+        <a
+                th:if="${!user.isDeleted()}"
+                th:href="'/users/ban/' + ${user.id}"
+                class="btn btn-danger mb-1"
+                role="button"
+                onclick="return confirm('Вы действительно хотите заблокировать пользователя?');"
+                aria-disabled="true">Заблокировать</a>
+        <a
+                th:if="${user.isDeleted()}"
+                th:href="'/users/unban/' + ${user.id}"
+                class="btn btn-success mb-1"
+                role="button"
+                onclick="return confirm('Вы действительно хотите разблокировать пользователя?');"
+                aria-disabled="true">Разблокировать</a>
+        <a
+                th:href="'/users/profile/' + ${user.id}"
+                class="btn btn-primary mb-1"
+                role="button"
+                aria-disabled="true">Просмотреть</a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <nav aria-label="Pagination" th:if="${users.totalPages gt 0}">
+    <ul class="pagination justify-content-center font-weight-bold">
+      <li class="page-item" th:classappend="${users.number eq 0} ? 'disabled'">
+        <a class="page-link"
+           th:href="@{/users/list?page={id}(id=${users.number lt 2 ? 1 : users.number})}"
+           aria-label="Previous" title="Previous Page" data-toggle="tooltip">
+          <span aria-hidden="true">&laquo;</span>
+        </a>
+      </li>
+      <li class="page-item" th:classappend="${i eq users.number + 1} ? 'active'"
+          th:each="i : ${#numbers.sequence( 1, users.totalPages, 1)}">
+        <a class="page-link" th:href="@{/users/list?page={id}(id=${i})}" th:text="${i}"
+           th:title="${'Page '+ i}" data-toggle="tooltip"></a>
+      </li>
+      <li class="page-item" th:classappend="${users.number eq users.totalPages - 1} ? 'disabled'">
+        <a class="page-link"
+           th:href="@{/users/list?page={id}(id=${users.number + 1})}"
+           aria-label="Next" title="Next Page" data-toggle="tooltip">
+          <span aria-hidden="true">&raquo;</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+</div>
+</body>
+</html>

@@ -1,7 +1,7 @@
 <div xmlns:th="http://www.thymeleaf.org"
      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
      th:fragment="header">
-    <nav class="navbar navbar-expand-lg" style="background-color: #b84f3c">
+    <nav class="navbar navbar-expand-lg" style="background-color: #7fcc34">
         <div class="container-fluid">
             <a class="navbar-brand" href="/" style="color: whitesmoke">Фильмотека</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -9,7 +9,6 @@
                     aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-
 
             <div sec:authorize="isAuthenticated()" class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul  class="navbar-nav me-auto mb-2 mb-lg-0">
@@ -19,9 +18,13 @@
                     <li class="nav-link active">
                         <a class="nav-link active" aria-current="page" href="/directors">Участники</a>
                     </li>
-<!--                    <li sec:authorize="isAuthenticated() && (hasRole('USER'))" class="nav-item">-->
-<!--                        <a class="nav-link active" aria-current="page" th:href="'/publish/user-films/' + ${#authentication.getPrincipal().getUserId()}">Мои фильмы</a>-->
-<!--                    </li>-->
+                    <li sec:authorize="isAuthenticated() && (hasRole('USER'))" class="nav-link active">
+                        <a class="nav-link active" aria-current="page" th:href="'/order/user-films/' + ${#authentication.getPrincipal().getUserId()}">Мои фильмы</a>
+                    </li>
+
+                    <li sec:authorize="isAuthenticated() && (hasRole('ADMIN'))" class="nav-link active">
+                        <a class="nav-link active" aria-current="page" th:href="'/users/list'">Пользователи</a>
+                    </li>
                 </ul>
                 <div  sec:authorize="isAuthenticated() && !hasRole('ADMIN')" >
                     <a  class="nav-link active" style="float: right" th:href="'/users/profile/' + ${#authentication.getPrincipal().getUserId()}">Профиль</a>
@@ -31,7 +34,6 @@
                     <a href="/logout" class="btn btn-primary" role="button" aria-disabled="true">Выйти</a>
                 </form>
             </div>
-
         </div>
     </nav>
 </div>

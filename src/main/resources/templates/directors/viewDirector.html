@@ -1,0 +1,21 @@
+<!--Добавление автобуса-->
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}"
+      lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Фильм</title>
+</head>
+<body>
+<div layout:fragment="content">
+  <h3 th:text="${director.getDirectorFIO()}"></h3>
+
+  <p th:text="'Должность: ' + ${director.getPosition()}"></p>
+  <p th:text="'Фильмы:'"></p>
+  <ul>
+    <li th:each="film : ${director.getFilms()}" th:text="${film.getTitle()}"></li>
+  </ul>
+</div>
+</body>
+</html>

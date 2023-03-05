@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout}"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Участники</title>
+    <title>Учатстники</title>
 </head>
 <body>
 
 <div layout:fragment="content">
-
-    <h1>Участники фильмов</h1>
+    <h1>Учатстники фильмов</h1>
 
     <div class="row">
         <div class="col">
@@ -19,7 +19,23 @@
                     class="btn btn-secondary"
                     role="button"
                     style="float: right"
+                    sec:authorize="isAuthenticated() && (hasRole('ADMIN'))"
                     aria-disabled="true">Добавить участника</a>
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col">
+            <form method="POST" action="directors/search" th:object="${searchDirectors}">
+                <div class="row">
+                    <div class="col-10">
+                        <input placeholder="Введите ФИО участника" type="text" id="directorFIO" class="form-control" name="directorFIO">
+                    </div>
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-primary">Поиск</button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -28,12 +44,25 @@
         <tr>
             <th>ФИО</th>
             <th>Должность</th>
+            <th sec:authorize="hasRole('ADMIN')" scope="col">Статус</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="director : ${directors}">
             <td th:text="${director.directorFIO}"></td>
             <td th:text="${director.position}"></td>
+            <td sec:authorize="hasRole('ADMIN')" th:text="${director.isDeleted() ? 'Удалена' : 'Активна'}"></td>
+            <td style="text-align: right">
+                <div sec:authorize="isAuthenticated() && (hasRole('ADMIN'))">
+                    <a th:if="${!director.isDeleted()}" class="btn btn-danger mb-1" th:href="'/directors/block/' + ${director.id}">Заблокировать</a>
+                    <a th:if="${director.isDeleted()}" class="btn btn-success mb-1" th:href="'/directors/unblock/' + ${director.id}">Разблокировать</a>
+                    <br>
+                    <a class="btn btn-warning mb-1" th:href="'/directors/update/' + ${director.id}">Обновить</a>
+                    <br>
+                    <a class="btn btn-success mb-1" th:href="'/directors/add-film/' + ${director.id}">Добавить фильм</a>
+                </div>
+                <a class="btn btn-success mb-1" th:href="'/directors/' + ${director.id}">Просмотреть</a>
+            </td>
         </tr>
         </tbody>
     </table>
@@ -62,7 +91,6 @@
             </li>
         </ul>
     </nav>
-
 </div>
 
 </body>

@@ -28,12 +28,12 @@ public class FilmController extends GenericController<Film, FilmDto>{
         this.mapper = mapper;
     }
 
-    @GetMapping("/search")
-    public List<Film> search(
-        @RequestParam(value = "title", required = false) String title,
-        @RequestParam(value = "genre", required = false) Genre genre,
-        @RequestParam(value = "country", required = false) String country
-    ){
-        return service.search(title, genre, country);
-    }
+//    @GetMapping("/search")
+//    public List<FilmDto> search(
+//        @RequestParam(value = "title", required = false) String title,
+//        @RequestParam(value = "genre", required = false) Genre genre,
+//        @RequestParam(value = "country", required = false) String country
+//    ){
+//        return mapper.toDtos(service.search(title, genre, country));
+//    }
 }

@@ -47,6 +47,7 @@ public class WebSecurityConfig {
                 //Настройка для входа в систему
                 .formLogin()
                 .loginPage("/login")
+                .failureUrl("/login?error=Uncorrected login or password")
                 //Перенарпавление на главную страницу после успешного входа
                 .defaultSuccessUrl("/")
                 .permitAll()

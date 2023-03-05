@@ -12,9 +12,6 @@
 </head>
 <body>
 <div layout:fragment="content">
-  <!--        Форма регистрации-->
-  <!--        action="/registration" - url на который будут отправлены данные-->
-  <!--        object="userForm" - имя объекта в котором будут хранится данные (нужно чтобы потом в контроллере их распарсить)-->
   <form method="POST" th:action="@{/users/registration}" th:object="${userForm}" style="margin: 0 auto">
     <div class="row">
       <div  class="col-auto">
